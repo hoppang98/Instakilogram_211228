@@ -1,4 +1,4 @@
-package com.instakilogram.project;
+package com.instakilogram.project.config;
 
 import javax.sql.DataSource;
 
