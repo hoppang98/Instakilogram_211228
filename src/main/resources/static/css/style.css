@@ -1,1 +1,11 @@
 @charset "UTF-8";
+
+#wrap {
+	width:1200px;
+	height:800px;
+	margin:auto;
+}
+
+.join-box {
+	width:600px;
+}
