@@ -18,20 +18,124 @@
 </head>
 <body>
 	<div id="wrap">
-		<div class="conatiner d-flex justify-content-center	align-items-center">
+	
+		<c:import url="/WEB-INF/jsp/include/header.jsp" />
+	
+		<div class="conatiner d-flex justify-content-center">
+
 			<img src="/static/image/instagram.png">
-			<section class="join-box border">
-				<div class="display-3 text-center">InstaKilogram</div>
-				<div class="text-center text-secondary mt-2">친구들의 사진과 동영상을 보려면 <br>가입하세요</div>
-				<br>
-				<input type="text" class="form-control mb-2" placeholder="아이디" id="loginIdInput">
-				<button type="button" id="is_duplicateBtn" class="btn btn-info btn-block mb-2">중복확인</button>
-				<input type="password" class="form-control mb-2" placeholder="비밀번호" id="passwordInput">
-				<input type="password" class="form-control mb-2" placeholder="비밀번호 확인" id="passwordConfirmInput">
-				<input type="text" class="form-control mb-2" placeholder="이름" id="nameInput">
-				<input type="text" class="form-control mb-2" placeholder="이메일" id="emailInput">
+
+			<section class="join-box">
+				<div class="border">
+					<div class="display-3 text-center">InstaKilogram</div>
+					<div class="text-center text-secondary mt-2">친구들의 사진과 동영상을 보려면 <br>가입하세요</div>
+					<br>
+					<div id="item">
+						<input type="text" class="form-control w-50" placeholder="아이디" id="loginIdInput">
+							<small id="DuplicationId" class="text-danger d-none">중복된 id 입니다.</small>
+							<small id="availableId" class="text-success d-none">저장 가능한 id 입니다.</small>
+						<button type="button" id="is_duplicateBtn" class="btn btn-info btn-block mt-2 mb-2 w-50">중복확인</button>	
+						<input type="password" class="form-control mb-2 w-50" placeholder="비밀번호" id="passwordInput">
+						<input type="password" class="form-control mb-2 w-50" placeholder="비밀번호 확인" id="passwordConfirmInput">
+						<input type="text" class="form-control mb-2 w-50" placeholder="이름" id="nameInput">
+						<input type="text" class="form-control mb-2 w-50" placeholder="이메일" id="emailInput">
+							<button type="button" id="joinBtn" class="btn btn-info btn-block mb-5 w-50">회원가입</button>
+					</div>
+				</div>
+				<div class="border mt-2 text-center p-4">
+					<a href="/user/signin_view">로그인하기</a>
+				</div>
 			</section>
 		</div>
 	</div>
+	
+	<script>
+		$(document).ready(function(){
+			
+			var isDuplicateId = true;
+			
+			$("#joinBtn").on("click", function(){
+				var loginId = $("#loginIdInput").val();
+				var password = $("#passwordInput").val();
+				var passwordConfirm = $("#passwordConfirmInput").val();
+				var name = $("#nameInput").val();
+				var email = $("#emailInput").val();
+				
+				//if(loginId == "") {
+				//	alert("아이디를 입력하세요");
+				//	return;
+				//}
+				if(isDuplicateId) {
+					alert("중복된 id입니다");
+					return;
+				}
+				
+				if(password == "") {
+					alert("비밀번호를 입력하세요");
+					return;
+				}
+				
+				if(password != passwordConfirm) {
+					alert("비밀번호가 일치하지 않습니다");
+					return;
+				}
+				
+				if(name == "") {
+					alert("이름을 입력하세요");
+					return;
+				}
+				
+				if(email == "") {
+					alert("이메일을 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"post"
+					,url:"/user/sign_up"
+					,data:{"loginId":loginId, "password":password, "name":name, "email":email}
+					,success:function(data){
+						if(data.result == "success") {
+							alert("회원가입 성공!");
+							location.href="/user/signin_view";
+						} else {
+							alert("회원가입 실패");
+						}
+					},error:function(){
+						alert("에러발생");
+					}
+				});
+			});
+			
+			$("#is_duplicateBtn").on("click", function(){
+				var loginId = $("#loginIdInput").val();
+				
+				if(loginId == ""){
+					alert("아이디를 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"get"
+					,url:"/user/is_duplicate_id"
+					,data:{"loginId":loginId}
+					,success:function(data){
+						if(data.isDuplicate == "true") {
+							isDuplicateId = true;
+							$("#DuplicationId").removeClass("d-none");
+							$("#availableId").addClass("d-none");
+						} else {
+							isDuplicateId = false;
+							$("#availableId").removeClass("d-none");
+							$("#DuplicationId").addClass("d-none");
+						}
+					}
+					,error:function(){
+						alert("에러발생");
+					}
+				});
+			});
+		});
+	</script>
 </body>
 </html>

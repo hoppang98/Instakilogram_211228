@@ -6,6 +6,22 @@
 	margin:auto;
 }
 
-.join-box {
+.content > .join-box {
 	width:600px;
+	height:800px;
+}
+
+#item {
+	position: relative;
+	left:25%;
+}
+
+.container{
+	display:flex;
+	flex-direction: row;
+}
+
+.item2 {
+	position: relative;
+	left:12.5%;
 }
