@@ -14,15 +14,15 @@
 	
 <%-- css파일 --%>
 <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-<title>로그인</title>
+<title>Instakilogram 로그인</title>
 </head>
 <body>
 	<div id="wrap">
 	
-	<c:import url="/WEB-INF/jsp/include/header.jsp" />
+		<c:import url="/WEB-INF/jsp/include/header.jsp" />
 	
 		<div class="container d-flex justify-content-center">
-			<img src="/static/image/instagram.png">
+			<img src="/static/image/instagram.png" class="mr-3">
 			<div class="border">
 				<div class="display-3 text-center mt-5">InstaKilogram</div>
 				<div class="text-center text-secondary mt-3">친구들의 사진과 동영상을 보려면 <br>가입하세요</div>

@@ -23,7 +23,7 @@
 	
 		<div class="conatiner d-flex justify-content-center">
 
-			<img src="/static/image/instagram.png">
+			<img src="/static/image/instagram.png" class="mr-3">
 
 			<section class="join-box">
 				<div class="border">
@@ -53,6 +53,17 @@
 		$(document).ready(function(){
 			
 			var isDuplicateId = true;
+			var isIdCheck = false;
+			
+			
+			// 아이디 값에 입력이 있으면 중복체크 상태를 초기화한다.
+			$("#loginIdInput").on("input", function() {
+				$("#DuplicationId").addClass("d-none");
+				$("#availableId").addClass("d-none");
+				isIdCheck = false;
+				isDuplicateId = true;
+			});
+			
 			
 			$("#joinBtn").on("click", function(){
 				var loginId = $("#loginIdInput").val();
@@ -67,6 +78,10 @@
 				//}
 				if(isDuplicateId) {
 					alert("중복된 id입니다");
+					return;
+				}
+				if(isIdCheck = false){
+					alert("중복상태를 체크하세요");
 					return;
 				}
 				
@@ -120,7 +135,9 @@
 					,url:"/user/is_duplicate_id"
 					,data:{"loginId":loginId}
 					,success:function(data){
-						if(data.isDuplicate == "true") {
+						isIdCheck = true;
+						
+						if(data.isDuplicate == true) {
 							isDuplicateId = true;
 							$("#DuplicationId").removeClass("d-none");
 							$("#availableId").addClass("d-none");
