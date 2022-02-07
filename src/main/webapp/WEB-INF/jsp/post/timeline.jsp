@@ -14,11 +14,78 @@
 	
 <%-- css파일 --%>
 <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-<title>Insert title here</title>
+<title>Instakilogram</title>
 </head>
 <body>
-	<c:import url="/WEB-INF/jsp/include/header.jsp" />
-	hello world
+	<div id="wrap">
+		<c:import url="/WEB-INF/jsp/include/header.jsp" />
+		
+		<section class="d-flex justify-content-center">
+			<div class="w-50">
+				
+				<%-- 게시글 입력 --%>
+				<div class="border mt-2">
+					<textarea class="form-control" rows="3" id="contentInput">내용을 입력해주세요</textarea>
+					<div class="d-flex justify-content-between mt-1">
+						<input type="file" id="fileInput">
+						<button type="button" class="btn btn-success btn-sm" id="uploadBtn">업로드</button>
+					</div>
+				</div>
+				
+				<%-- 게시글 확인 --%>
+				<div class="w-50 border mt-2">
+					<div>게시글 내용</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
 	
+	
+	
+	
+	<script>
+	$(document).ready(function(){
+		$("#uploadBtn").on("click", function(){
+			let content = $("#contentInput");
+			let file = $("#fileInput");
+			
+			if(title == "") {
+				alert("내용을 입력해주세요");
+				return;
+			}
+			if(file == "") {
+				alert("사진을 추가해주세요");
+				return;
+			}
+			
+			
+			var formData = new FormData();
+			formData.append("content", content);
+			formData.append("file", $("#fileInput")[0].files[0]);
+			
+			$.ajax({
+				type:"post"
+				,url:"/post/create"
+				,data:formData
+				,enctype:"multipart/form-data"
+				,processData:false
+				,contentType:false
+				,success:function(data) {
+					if(data.result == "success") {
+						alert("입력 성공");
+					} else {
+						alert("입력 실패")
+					}
+				},error:function(){
+					alert("에러발생");
+				}
+			});
+			
+		});
+	});
+	
+	
+	</script>
 </body>
 </html>
