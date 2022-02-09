@@ -42,17 +42,9 @@
 							
 							<div class="d-flex justify-content-between p-3 border mt-2">
 								<div>${postlist.userName} </div>
-								<button class="openDeleteBtn btn btn-sm bi bi-list"></button>
+								<button class="btn btn-sm bi bi-list openDeleteModal" data-post-id="${postlist.id}"></button>
 							</div>
-							
-							
-							
-							
-							
-							<%-- <div>
-								<button type="button" class="deleteBtn btn btn-danger w-100 d-none">삭제하기</button>
-							</div> --%>
-							
+
 							<img src="${postlist.imagePath}" width="100%">
 							
 							<div class="border">
@@ -64,8 +56,8 @@
 								</div>
 								<div class="bg-light"><span class="ml-3">댓글</span></div>
 								<div class="d-flex 100 ml-3 my-2">
-									<input type="text" class="form-control">
-									<button type="button" class="btn btn-sm ml-2 mr-3">게시</button>
+									<input type="text" class="form-control" value="댓글 달기" id="comment">
+									<button type="button" class="btn btn-sm ml-2 mr-3" id="commentInputBtn" data-postId-forComment=${postlist.id}>게시</button>
 								</div>
 							</div>
 						</c:forEach>
@@ -73,6 +65,28 @@
 				</div>
 			</div>
 
+
+			<%-- modal 활용해서 삭제기능 만들기 --%>
+			<!-- modal -->
+			<div class="modal fade" id="DeleteModal" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">게시글 삭제</h5>
+							<button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
+						</div>
+						<div class="modal-body">
+							<p>정말 삭제하시겠습니까?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger agreeBtn" data-bs-dismiss="modal"">예</button>
+							<button type="button" class="btn btn-default" data-bs-dismiss="modal">아니요</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
 	</div>
 	
@@ -120,11 +134,55 @@
 			
 		});
 		
-		//$(".openDeleteBtn").on("click", function(){
+
+		// 삭제기능 구현
+		$(".openDeleteModal").on("click", function() {
+			$("#DeleteModal").modal();
+			var postId = $(this).data("post-id");
+			$("#DeleteModal").data("post-id", postId);
+		});
+		
+		$(".agreeBtn").on("click", function(){
+			var postId = $("#DeleteModal").data("post-id");
 			
-		//	$(".deleteBtn").removeClass("d-none");
+			$.ajax({
+				type:"get"
+				,url:"/post/delete"
+				,data:{"postId":postId}
+				,success:function(data) {
+					if(data.result == "success") {
+						alert("삭제 성공!");
+						location.href="/post/timeline_view";
+					} else {
+						alert("삭제 실패!");
+					}
+				}, error:function(){
+					alert("에러발생");
+				}
+			});
+		});
+		
+		// 댓글 입력 기능
+		$("#commentInputBtn").on("click", function(){
+			let comment = $("#comment").val();
+			let postId = $(this).data("postId-forComment");
 			
-		//});
+			$.ajax({
+				type:"post"
+				,url:"/post/comment/create"
+				,data:{"comment":comment, "postId":postId}
+				,success:function(data) {
+					if(result == "success"){
+						alert("댓글 입력 성공");
+						location.href="/post/timeline_view";
+					} else {
+						alert("댓글 입력 실패");
+					}
+				}, error:function(){
+					alert("에러 발생");
+				}
+			});
+		});
 		
 		
 	});

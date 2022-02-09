@@ -55,7 +55,6 @@
 			var isDuplicateId = true;
 			var isIdCheck = false;
 			
-			
 			// 아이디 값에 입력이 있으면 중복체크 상태를 초기화한다.
 			$("#loginIdInput").on("input", function() {
 				$("#DuplicationId").addClass("d-none");
@@ -76,12 +75,14 @@
 				//	alert("아이디를 입력하세요");
 				//	return;
 				//}
-				if(isDuplicateId) {
-					alert("중복된 id입니다");
+				
+				if(isIdCheck == false){
+					alert("id 중복상태를 체크하세요");
 					return;
 				}
-				if(isIdCheck = false){
-					alert("중복상태를 체크하세요");
+				
+				if(isDuplicateId) {
+					alert("중복된 id입니다");
 					return;
 				}
 				

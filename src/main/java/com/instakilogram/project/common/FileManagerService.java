@@ -43,4 +43,41 @@ public class FileManagerService {
 		logger.info("/Instakilogram images/" + directioryName + file.getOriginalFilename());
 		return "/Instakilogram images/" + directioryName + file.getOriginalFilename();
 	}
+	
+	
+	
+	
+	
+	// 파일 삭제
+	public static void removeFile(String filePath) {
+		if(filePath == null) {
+			logger.error("FileManagerService::removeFile - 삭제할 파일 없음");
+			return;
+		}
+
+		String realFilePath = FILE_UPLOAD_PATH + filePath.replace("/Instakilogram images/", "");
+
+		Path path = Paths.get(realFilePath);
+
+		if (Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				logger.error("FileManagerService::removeFile - 파일 삭제 실패");
+				e.printStackTrace();
+			}
+		}
+
+		path = path.getParent();
+
+		if (Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				logger.error("FileManagerService::removeFile - 디렉토리 삭제 실패");
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

@@ -24,4 +24,16 @@ public class PostBO {
 	public List<Post> getPostList() {
 		return postDAO.selectPostList();
 	}
+	
+	// 삭제
+	public int deletePost(int postId) {
+		Post post = postDAO.selectPost(postId);
+		FileManagerService.removeFile(post.getImagePath());
+		return postDAO.deletePost(postId);
+	}
+	
+	// 댓글 추가
+	public int addComment(int userId, String userName, int postId, String content) {
+		return postDAO.addComment(userId, userName, postId, content);
+	}
 }
