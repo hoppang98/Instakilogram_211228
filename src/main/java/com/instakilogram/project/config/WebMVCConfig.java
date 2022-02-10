@@ -8,6 +8,7 @@ import com.instakilogram.project.common.FileManagerService;
 
 @Configuration
 public class WebMVCConfig implements WebMvcConfigurer {
+	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/Instakilogram images/**")

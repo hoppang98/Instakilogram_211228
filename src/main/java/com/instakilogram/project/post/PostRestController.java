@@ -31,7 +31,7 @@ public class PostRestController {
 			){
 		HttpSession session = request.getSession();
 		
-		int userId = (Integer)session.getAttribute("userId");
+		int userId = (Integer)session.getAttribute("userId");	//setAttribute에서 object타입으로 업캐스팅을 한다. 이걸 받아와서 간편하게 사용이 가능, 다만 다운캐스팅을 해서 원래 자료형으로 맞춰줘야 정상적으로 사용 가능 
 		String userName = (String)session.getAttribute("userName");
 		
 		int count = postBO.addPost(userId, userName, content, file);
@@ -62,28 +62,8 @@ public class PostRestController {
 		return result;
 	}
 	
-	@PostMapping("/comment/create")
-	public Map<String, String> createComment(
-			@RequestParam("postId") int postId,
-			@RequestParam("comment") String content,
-			HttpServletRequest request
-			){
-		
-		HttpSession session = request.getSession();
-		int userId = (Integer)session.getAttribute("userId");
-		String userName = (String)session.getAttribute("userName");
-		
-		int count = postBO.addComment(userId, userName, postId, content);
-		
-		Map<String,String> result = new HashMap<>();
-		
-		if(count == 1) {
-			result.put("result", "success");
-		} else {
-			result.put("result", "fail");
-		}
-		
-		return result;
-		}	
+
+	
+	
 }
 

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.instakilogram.project.post.bo.PostBO;
+import com.instakilogram.project.post.model.Comment;
 import com.instakilogram.project.post.model.Post;
 
 @Controller
@@ -39,5 +40,13 @@ public class PostController {
 		}
 		
 
+	}
+	
+	@GetMapping("/select")
+	public String selectCommentList (Model model) {
+		List<Comment> commentList = postBO.getCommentList();
+		model.addAttribute("commentList", commentList);
+		
+		return "/post/timeline";
 	}
 }

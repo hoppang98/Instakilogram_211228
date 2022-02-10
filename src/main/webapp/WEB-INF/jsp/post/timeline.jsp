@@ -28,9 +28,11 @@
 				
 				<%-- 게시글 입력 --%>
 				<div class="border mt-2">
-					<textarea class="form-control" rows="3" id="contentInput">내용을 입력해주세요</textarea>
+					<textarea class="form-control" rows="3" id="contentInput"></textarea>
 					<div class="d-flex justify-content-between mt-1">
-						<input type="file" id="fileInput">
+						<%-- icon을 클릭했을 때 input 태그를 클릭한 효과와 같은 효과가 나오게 script에서 설정 --%>
+						<span class="img-icon"><i class="bi bi-card-image" id="imgBtn"></i></span> <%-- 글씨처럼 span태그에 넣어서 스타일 지정 가능 --%>
+						<input type="file" id="fileInput" class="d-none">
 						<button type="button" class="btn btn-success btn-sm" id="uploadBtn">업로드</button>
 					</div>
 				</div>
@@ -55,9 +57,18 @@
 										
 								</div>
 								<div class="bg-light"><span class="ml-3">댓글</span></div>
+								
+								<%-- 댓글 불러오기 --%>
+								<div>
+									<c:forEach var="commentList" items="${commentList}">
+										<span>${commentList.userName}</span>
+									</c:forEach>
+								</div>
+								
+								
 								<div class="d-flex 100 ml-3 my-2">
 									<input type="text" class="form-control" value="댓글 달기" id="comment">
-									<button type="button" class="btn btn-sm ml-2 mr-3" id="commentInputBtn" data-postId-forComment=${postlist.id}>게시</button>
+									<button class="btn btn-sm ml-2 mr-3 commentInputBtn" data-post-idforcomment="${postlist.id}">게시</button>
 								</div>
 							</div>
 						</c:forEach>
@@ -95,19 +106,25 @@
 	
 	<script>
 	$(document).ready(function(){
+		
+		$("#imgBtn").on("click", function(){
+			// fileInput 클릭 효과 적용
+			$("#fileInput").click(); // imgBtn을 클릭할 경우 fileInput이 눌리게 한다.
+		});
+		
 		$("#uploadBtn").on("click", function(){
-			let content = $("#contentInput").val();
-			let file = $("#fileInput");
+			let content = $("#contentInput").val().trim();
 			
 			if(content == "") {
 				alert("내용을 입력해주세요");
 				return;
 			}
-			if(file == "") {
-				alert("사진을 추가해주세요");
+			
+			// 파일 유효성 검사
+			if($("#fileInput")[0].files.length == 0) {		// 배열의 길이가 0이면 파일이 없는 것
+				alert("파일을 선택해주세요");
 				return;
 			}
-			
 			
 			var formData = new FormData();
 			formData.append("content", content);
@@ -123,7 +140,7 @@
 				,success:function(data) {
 					if(data.result == "success") {
 						alert("입력 성공");
-						location.href="/post/timeline_view";
+						location.reload();
 					} else {
 						alert("입력 실패")
 					}
@@ -138,7 +155,8 @@
 		// 삭제기능 구현
 		$(".openDeleteModal").on("click", function() {
 			$("#DeleteModal").modal();
-			var postId = $(this).data("post-id");
+			let postId = $(this).data("post-id");
+			//alert(postId);
 			$("#DeleteModal").data("post-id", postId);
 		});
 		
@@ -163,16 +181,17 @@
 		});
 		
 		// 댓글 입력 기능
-		$("#commentInputBtn").on("click", function(){
+		$(".commentInputBtn").on("click", function() {
 			let comment = $("#comment").val();
-			let postId = $(this).data("postId-forComment");
+			let postId = $(this).data("post-idforcomment");
+			//alert(postId);
 			
 			$.ajax({
 				type:"post"
-				,url:"/post/comment/create"
+				,url:"/comment/create"
 				,data:{"comment":comment, "postId":postId}
 				,success:function(data) {
-					if(result == "success"){
+					if(data.result == "success"){
 						alert("댓글 입력 성공");
 						location.href="/post/timeline_view";
 					} else {

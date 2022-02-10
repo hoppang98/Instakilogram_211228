@@ -59,24 +59,11 @@
 			`id` = #{postId}
 	</select>
 	
-	<insert id="insertPost" parameterType="map">
-		INSERT INTO `comment`
-		(
-			`userId`
-			,`userName`
-			,`postId`
-			,`content`
-			,createdAt`
-			,updatedAt`
-		)
-		VALUES
-		(
-			#{userId}
-			,#{userName}
-			,#{postId}
-			,#{content}
-			,now()
-			,now()
-		)
-	</insert>
+
+	<select id="selectCommentList" resultType="com.instakilogram.project.post.model.Comment">
+		SELECT	
+			*
+		FROM
+			`comment`
+	</select>
 </mapper>

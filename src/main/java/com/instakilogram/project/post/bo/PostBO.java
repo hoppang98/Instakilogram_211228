@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.instakilogram.project.common.FileManagerService;
 import com.instakilogram.project.post.dao.PostDAO;
+import com.instakilogram.project.post.model.Comment;
 import com.instakilogram.project.post.model.Post;
 
 @Service
@@ -16,6 +17,7 @@ public class PostBO {
 	@Autowired
 	private PostDAO postDAO;
 	
+	//게시글 추가
 	public int addPost(int userId, String userName, String content, MultipartFile file) {
 		String filePath = FileManagerService.saveFile(userId, file);
 		return postDAO.insertPost(userId, userName, content, filePath);
@@ -32,8 +34,10 @@ public class PostBO {
 		return postDAO.deletePost(postId);
 	}
 	
-	// 댓글 추가
-	public int addComment(int userId, String userName, int postId, String content) {
-		return postDAO.addComment(userId, userName, postId, content);
+	
+	// 댓글 불러오기
+	public List<Comment> getCommentList(){
+		return postDAO.selectCommentList();
 	}
+
 }
