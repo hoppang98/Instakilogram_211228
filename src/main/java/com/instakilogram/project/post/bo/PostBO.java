@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.instakilogram.project.common.FileManagerService;
 import com.instakilogram.project.post.dao.PostDAO;
-import com.instakilogram.project.post.model.Comment;
 import com.instakilogram.project.post.model.Post;
 
 @Service
@@ -34,10 +33,6 @@ public class PostBO {
 		return postDAO.deletePost(postId);
 	}
 	
-	
-	// 댓글 불러오기
-	public List<Comment> getCommentList(){
-		return postDAO.selectCommentList();
-	}
+
 
 }

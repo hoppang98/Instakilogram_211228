@@ -1,4 +1,4 @@
-package com.instakilogram.project.comment;
+package com.instakilogram.project.post.comment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.instakilogram.project.comment.bo.CommentBO;
+import com.instakilogram.project.post.comment.bo.CommentBO;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/post/comment")
 public class CommentRestController {
-
+	
 	@Autowired
 	private CommentBO commentBO;
 	
@@ -44,6 +44,4 @@ public class CommentRestController {
 		
 		return result;
 		}
-	
-
 }

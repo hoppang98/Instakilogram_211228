@@ -9,18 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.instakilogram.project.post.bo.PostBO;
-import com.instakilogram.project.post.model.Comment;
+import com.instakilogram.project.post.comment.bo.CommentBO;
+import com.instakilogram.project.post.comment.model.Comment;
 import com.instakilogram.project.post.model.Post;
 
 @Controller
+@RequestMapping("/post")
 public class PostController {
 	
 	@Autowired
 	private PostBO postBO;
 	
-	@GetMapping("/post/timeline_view")
+	@Autowired
+	private CommentBO commentBO;
+	
+	@GetMapping("/timeline_view")
 	public String timelineView(
 			HttpServletRequest request
 			,Model model
@@ -32,21 +38,17 @@ public class PostController {
 		
 		if (userName == null) {
 			return "/user/signIn";
+			
 		} else {
+			// 게시글 List
 			List<Post> postlist = postBO.getPostList();
 			model.addAttribute("postlist", postlist);
 			
+			// 댓글 List
+			List<Comment> commentList = commentBO.getCommentList();
+			model.addAttribute("commentList", commentList);
+			
 			return "/post/timeline";
 		}
-		
-
-	}
-	
-	@GetMapping("/select")
-	public String selectCommentList (Model model) {
-		List<Comment> commentList = postBO.getCommentList();
-		model.addAttribute("commentList", commentList);
-		
-		return "/post/timeline";
 	}
 }

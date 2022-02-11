@@ -40,20 +40,20 @@
 				<%-- 게시글 --%>
 				<div class="d-flex justify-content-center">
 					<div class="w-100 mt-2">
-						<c:forEach var="postlist" items="${postlist}">
+						<c:forEach var="postlistforpost" items="${postlist}">
 							
 							<div class="d-flex justify-content-between p-3 border mt-2">
-								<div>${postlist.userName} </div>
-								<button class="btn btn-sm bi bi-list openDeleteModal" data-post-id="${postlist.id}"></button>
+								<div>${postlistforpost.userName} </div>
+								<button class="btn btn-sm bi bi-list openDeleteModal" data-post-id="${postlistforpost.id}"></button>
 							</div>
 
-							<img src="${postlist.imagePath}" width="100%">
+							<img src="${postlistforpost.imagePath}" width="100%">
 							
 							<div class="border">
 								<div class="ml-3">
 									<i class="bi bi-heart"></i>
 									<div>좋아요 XX 개</div>
-									<div><strong>${postlist.userName}</strong> ${postlist.content}</div>
+									<div><strong>${postlistforpost.userName}</strong> ${postlistforpost.content}</div>
 										
 								</div>
 								<div class="bg-light"><span class="ml-3">댓글</span></div>
@@ -61,14 +61,16 @@
 								<%-- 댓글 불러오기 --%>
 								<div>
 									<c:forEach var="commentList" items="${commentList}">
-										<span>${commentList.userName}</span>
+										<c:if test="${commentList.postId eq postlistforpost.id}">
+										<%--<c:if test="${postlist.id}" eq "${commentList.postId}">  이렇게 하면 "5" eq "4" 이런식으로 출력된다. 따라서 윗줄처럼 해야한다.--%>
+											<div class="ml-3"><b>${commentList.userName}</b> : ${commentList.content}</div>
+										</c:if>
 									</c:forEach>
 								</div>
 								
-								
 								<div class="d-flex 100 ml-3 my-2">
-									<input type="text" class="form-control" value="댓글 달기" id="comment">
-									<button class="btn btn-sm ml-2 mr-3 commentInputBtn" data-post-idforcomment="${postlist.id}">게시</button>
+									<input type="text" class="form-control" placeholder="댓글 달기" id="comment${postlistforpost.id}">
+									<button class="btn btn-sm ml-2 mr-3 commentInputBtn" data-post-idforcomment="${postlistforpost.id}">게시</button>
 								</div>
 							</div>
 						</c:forEach>
@@ -182,13 +184,13 @@
 		
 		// 댓글 입력 기능
 		$(".commentInputBtn").on("click", function() {
-			let comment = $("#comment").val();
 			let postId = $(this).data("post-idforcomment");
+			let comment = $("#comment" + postId).val().trim();
 			//alert(postId);
 			
 			$.ajax({
 				type:"post"
-				,url:"/comment/create"
+				,url:"/post/comment/create"
 				,data:{"comment":comment, "postId":postId}
 				,success:function(data) {
 					if(data.result == "success"){

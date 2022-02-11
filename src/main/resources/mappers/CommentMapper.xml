@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.instakilogram.project.comment.dao.CommentDAO">
+<mapper namespace="com.instakilogram.project.post.comment.dao.CommentDAO">
 	<insert id="addComment" parameterType="map">
 		INSERT INTO `comment`
 		(
@@ -23,6 +23,11 @@
 			,now()
 		)
 	</insert>
-	
 
+	<select id="selectCommentList" resultType="com.instakilogram.project.post.comment.model.Comment">
+		SELECT	
+			*
+		FROM
+			`comment`
+	</select>
 </mapper>

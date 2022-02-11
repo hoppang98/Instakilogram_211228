@@ -35,7 +35,7 @@
 			,updatedAt`
 		FROM
 			`post`
-		ORDER BY `updatedAt` DESC
+		ORDER BY `id` DESC
 	</select>
 	
 	<delete id="deletePost" parameterType="int">
@@ -60,10 +60,4 @@
 	</select>
 	
 
-	<select id="selectCommentList" resultType="com.instakilogram.project.post.model.Comment">
-		SELECT	
-			*
-		FROM
-			`comment`
-	</select>
 </mapper>

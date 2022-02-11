@@ -1,4 +1,4 @@
-package com.instakilogram.project.post.model;
+package com.instakilogram.project.post.comment.model;
 
 import java.util.Date;
 
@@ -53,5 +53,4 @@ public class Comment {
 		public void setUpdatedAt(Date updatedAt) {
 			this.updatedAt = updatedAt;
 		}
-		
 }
