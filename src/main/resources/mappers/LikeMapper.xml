@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.instakilogram.project.post.like.dao.LikeDAO">
+
+	<insert id="insertLike" parameterType="map">
+		INSERT INTO `like`
+		(
+			`postId`
+			,`userId`
+			,`createdAt`
+		)
+		VALUES
+		(
+			#{postId}
+			,#{userId}
+			,now()
+		)
+	</insert>
+	
+	<select id="selectLikeCount" parameterType="int" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			`like`
+		WHERE
+			`postId` = ${postId}
+	</select>
+	
+	<select id="selectLikeCountByUserId" parameterType="map" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			`like`
+		WHERE
+			`postId` = ${postId}
+			AND `userId` = ${userId}
+	</select>
+
+</mapper>

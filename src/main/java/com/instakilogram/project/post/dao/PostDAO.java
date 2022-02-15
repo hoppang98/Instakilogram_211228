@@ -23,6 +23,7 @@ public interface PostDAO {
 	
 	//post 삭제
 	public int deletePost(@Param("postId") int postId);
+	
 	//post 삭제를 위해 select
 	public Post selectPost(@Param("postId") int postId);
 	

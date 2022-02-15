@@ -19,8 +19,13 @@ public class CommentBO {
 		return commentDAO.addComment(userId, userName, postId, content);
 	}
 	
-	// 댓글 불러오기
-	public List<Comment> getCommentList(){
-		return commentDAO.selectCommentList();
+	// 댓글 불러오기 - 아래 방법으로 사용
+	//public List<Comment> getCommentList(){
+	//	return commentDAO.selectCommentList();
+	//}
+	
+	// postId로 댓글 리스트 가져오기(postId에 맞는 댓글 리스트를 가져온다) - postBO에서 활용
+	public List<Comment> getCommentList(int postId) {
+		return commentDAO.selectCommentList(postId);
 	}
 }
