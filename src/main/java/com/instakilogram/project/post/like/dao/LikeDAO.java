@@ -5,10 +5,17 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LikeDAO {
-
+	
+	// 좋아요 추가
 	public int insertLike(
 			@Param("postId") int postId, 
 			@Param("userId") int userId);
+	
+	// 좋아요 삭제
+	public int deleteLike(
+			@Param("postId") int postId, 
+			@Param("userId") int userId);
+	
 	
 	// 좋아요 갯수 불러오기
 	public int selectLikeCount(@Param("postId") int postId);

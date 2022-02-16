@@ -25,7 +25,7 @@
 		FROM
 			`like`
 		WHERE
-			`postId` = ${postId}
+			`postId` = #{postId}
 	</select>
 	
 	<select id="selectLikeCountByUserId" parameterType="map" resultType="int">
@@ -34,8 +34,15 @@
 		FROM
 			`like`
 		WHERE
-			`postId` = ${postId}
-			AND `userId` = ${userId}
+			`postId` = #{postId}
+			AND `userId` = #{userId}
 	</select>
+	
+	<delete id="deleteLike">
+		DELETE FROM `like`
+		WHERE
+			`postId` = #{postId}
+			AND `userId` = #{userId} 
+	</delete>
 
 </mapper>

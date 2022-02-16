@@ -37,7 +37,6 @@ public class PostController {
 		
 		if (userName == null) {
 			return "/user/signIn";
-			
 		} else {
 			List<PostDetail> postList = postBO.getPostList(userId); // -> bo에서 사용할 userId를 같이 보내준다.
 			model.addAttribute("postList", postList);

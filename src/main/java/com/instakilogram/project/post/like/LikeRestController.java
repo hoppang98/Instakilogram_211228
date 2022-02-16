@@ -20,22 +20,49 @@ public class LikeRestController {
 	@Autowired
 	private LikeBO likeBO;
 	
+	// 좋아요 저장 api
 	@GetMapping("/post/like")
-	public Map<String, String> like(
+	public Map<String, Boolean> like(
 			@RequestParam("postId") int postId,
-			HttpServletRequest request
+			HttpServletRequest request		// userId를 받아오기 위해
 			){
 		HttpSession session = request.getSession();
 		int userId = (Integer)session.getAttribute("userId");
-		int count = likeBO.addLike(postId, userId);
 		
-		Map<String,String> result = new HashMap<>();
+		boolean isLike = likeBO.like(postId, userId);
 		
-		if(count == 1) {
-			result.put("result", "success");
-		} else {
-			result.put("result", "fail");
-		}
+		// 좋아요면 {"isLike":true}
+		// 좋아요 취소 {"isLike":false}
+		Map<String,Boolean> result = new HashMap<>();
+		
+		result.put("isLike", isLike); 
+		
 		return result;
 	}
 }
+	
+//	// 좋아요 취소 api - api를 하나로 통합
+//	@GetMapping("/post/unlike")
+//	public Map<String, Boolean> unlike (
+//			@RequestParam("postId") int postId,
+//			HttpServletRequest request		// userId를 받아오기 위해
+//			){
+//		HttpSession session = request.getSession();
+//		int userId = (Integer)session.getAttribute("userId");
+//		
+//		boolean isLike = likeBO.like(postId, userId);
+//		
+//		
+//		Map<String,Boolean> result = new HashMap<>();
+//		
+//		if(isLike) {	// 0이면 삭제 실패
+//			result.put("isLike", true);
+//		} else {	// 1이상이면 성공
+//			result.put("isLike", false);
+//		}
+//		
+//		result.put("isLike", isLike); 
+//		
+//		return result;
+//	}
+

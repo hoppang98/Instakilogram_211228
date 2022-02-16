@@ -30,10 +30,12 @@
 					<textarea class="form-control" rows="3" id="contentInput"></textarea>
 					<div class="d-flex justify-content-between mt-1">
 						<%-- icon을 클릭했을 때 input 태그를 클릭한 효과와 같은 효과가 나오게 script에서 설정 --%>
-						<span class="img-icon"><i class="bi bi-card-image" id="imgBtn"></i></span>
+						<span class="img-icon"><i class="bi bi-card-image"
+							id="imgBtn"></i></span>
 						<%-- 글씨처럼 span태그에 넣어서 스타일 지정 가능 --%>
 						<input type="file" id="fileInput" class="d-none">
-						<button type="button" class="btn btn-success btn-sm" id="uploadBtn">업로드</button>
+						<button type="button" class="btn btn-success btn-sm"
+							id="uploadBtn">업로드</button>
 					</div>
 				</div>
 
@@ -41,30 +43,42 @@
 				<div class="d-flex justify-content-center">
 					<div class="w-100 mt-2">
 						<%-- post,comment,like를 모두 포함하는 postList객체를 반복문을 크게 돌린다. --%>
-						<c:forEach var="postDetail" items="${postList}"> 
+						<c:forEach var="postDetail" items="${postList}">
 							<div class="d-flex justify-content-between p-3 border mt-2">
-								<div>${postDetail.post.userName}</div> <%-- class가 두겹으로 쌓인 경우 이렇게 처리 --%>
-								<button class="btn btn-sm bi bi-list openDeleteModal" data-post-id="${postDetail.post.id}"></button>
+								<div>${postDetail.post.userName}</div>
+								<%-- class가 두겹으로 쌓인 경우 이렇게 처리 --%>
+
+								<%-- 더보기 버튼(삭제) --%>
+								<div class="more-icon">
+									<a class="text-dark moreBtn" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
+										<i class="bi bi-three-dots-vertical"></i>
+									</a>
+								</div>
 							</div>
 
 							<img src="${postDetail.post.imagePath}" width="100%">
 
 
 							<div class="border">
-							
+
 								<%-- 좋아요 관리(Like) --%>
 								<div class="ml-3">
-									<a href="#" class="likeBtn" data-post-id="${postDetail.post.id}"> <%-- data속성 활용해서 a 태그 안에 postId 심어놓는다 --%>
-										<c:choose>
-											<c:when test="${postDetail.like}">	<%-- getter,setter 잘 확인 / postDeatil.like은 true,false 타입이다. --%>
-												<i class="bi bi-heart-fill text-danger"></i> <%-- 좋아요가 눌려있는 경우에는 꽉 찬 하트 --%>
+									<%-- data속성 활용해서 a 태그 안에 postId 심어놓는다 --%>
+									<a href="#" class="likeBtn"
+										data-post-id="${postDetail.post.id}"> <c:choose>
+											<c:when test="${postDetail.like}">
+												<%-- getter,setter 잘 확인 / postDeatil.like은 true,false 타입이다. 이 상태는 true --%>
+												<%-- 좋아요 상태에 따라서 a 태그를 구분 --%>
+												<i class="bi bi-heart-fill text-danger"></i>
+												<%-- 좋아요가 눌려있는 경우에는 꽉 찬 하트 --%>
 											</c:when>
 											<c:otherwise>
-												<i class="bi bi-heart text-dark"></i> <%-- 좋아요가 눌려있지 않은 경우에는 빈 하트 --%>
+												<i class="bi bi-heart text-dark"></i>
+												<%-- 좋아요가 눌려있지 않은 경우에는 빈 하트 --%>
 											</c:otherwise>
 										</c:choose>
 									</a>
-									
+
 									<%-- 좋아요 개수 --%>
 									<span class="middle-size">좋아요 ${postDetail.likeCount}개</span>
 								</div>
@@ -90,8 +104,10 @@
 								</div>
 
 								<div class="d-flex 100 ml-3 my-2">
-									<input type="text" class="form-control" placeholder="댓글 달기" id="comment${postDetail.post.id}">
-									<button class="btn btn-sm ml-2 mr-3 commentInputBtn" data-post-id="${postDetail.post.id}">게시</button>
+									<input type="text" class="form-control" placeholder="댓글 달기"
+										id="comment${postDetail.post.id}">
+									<button class="btn btn-sm ml-2 mr-3 commentInputBtn"
+										data-post-id="${postDetail.post.id}">게시</button>
 								</div>
 							</div>
 						</c:forEach>
@@ -102,25 +118,12 @@
 
 			<%-- modal 활용해서 삭제기능 만들기 --%>
 			<!-- modal -->
-			<div class="modal fade" id="DeleteModal" role="dialog">
-				<div class="modal-dialog">
-
-					<!-- Modal content-->
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">게시글 삭제</h5>
-							<button type="button" class="btn" data-bs-dismiss="modal"
-								aria-label="Close">X</button>
-						</div>
-						<div class="modal-body">
-							<p>정말 삭제하시겠습니까?</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger agreeBtn"
-								data-bs-dismiss="modal"">예</button>
-							<button type="button" class="btn btn-default"
-								data-bs-dismiss="modal">아니요</button>
-						</div>
+
+						<div class="modal-body text-center">삭제하기</div>
+
 					</div>
 				</div>
 			</div>
@@ -229,9 +232,10 @@
 			});
 		});
 		
-		
-		// 좋아요 관리
-		$(".likeBtn").on("click", function() {
+		// 좋아요 입력
+		$(".likeBtn").on("click", function(e) {
+			e.preventDefault();
+			// a 태그에 #이 있으면 클릭시 책갈피기능 사용된다. 화면 맨 위로 올라감 e.preventDefault();로 고유의 기능 삭제 가능
 			let postId = $(this).data("post-id");
 			
 			$.ajax({
@@ -239,17 +243,15 @@
 				,url:"/post/like"
 				,data:{"postId":postId}
 				,success:function(data) {
-					if(data.result == "success"){
-						alert("좋아요 입력 성공");
-						location.reload();
-					} else {
-						alert("좋아요 입력 실패");
-					}
+					alert("좋아요");
+					location.reload();
 				},error:function(){
-					alert("좋아요 에러");
+					alert("좋아요 에러 발생");
 				}
 			});
 		});
+		
+		
 		
 		
 	});

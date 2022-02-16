@@ -11,9 +11,27 @@ public class LikeBO {
 	@Autowired
 	private LikeDAO likeDAO;
 	
-	public int addLike (int postId, int userId) {
-		return likeDAO.insertLike(postId, userId);
+	// 좋아요 추가
+	// 리턴 : 좋아요 : true 좋아요 취소 : false
+	public boolean like (int postId, int userId) {
+		
+		// 전달받은 데이터를 기반으로 좋아요 상태면 좋아요 취소 - delete
+		// 좋아요가 아닌 상태면 좋아요 - insert
+		// 지금상태가 무슨 상태인지 알아야 한다. - likeBO의 isLike를 활용
+		
+		if(this.isLike(postId, userId)) { // 좋아요 상태
+			likeDAO.deleteLike(postId, userId);
+			return false;
+		} else { // 좋아요가 아닌 상태
+			likeDAO.insertLike(postId, userId);
+			return true;
+		}
 	}
+	
+	// 좋아요 삭제 - 위의 like로 구현
+		//public int deleteLike (int postId, int userId) {
+		//	return likeDAO.deleteLike(postId, userId);
+		//}
 	
 	// postId로 좋아요 개수 조회
 	public int getLikeCount(int postId) {
@@ -34,4 +52,6 @@ public class LikeBO {
 		// return !(likeDAO.selectLikeCountByUserId(postId, userId) == 0); --> 셋이 다 같은 뜻으로 문법만 다르다.
 		
 	}
+	
+	
 }
