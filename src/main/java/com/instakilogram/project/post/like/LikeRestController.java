@@ -41,7 +41,7 @@ public class LikeRestController {
 	}
 }
 	
-//	// 좋아요 취소 api - api를 하나로 통합
+//	// 좋아요 취소 - 좋아요 관련 api를 하나로 통합
 //	@GetMapping("/post/unlike")
 //	public Map<String, Boolean> unlike (
 //			@RequestParam("postId") int postId,

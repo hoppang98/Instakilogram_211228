@@ -54,4 +54,10 @@ public class LikeBO {
 	}
 	
 	
+	// 포스트 삭제시 해당 포스트의 좋아요까지 삭제
+	public int deleteLikeByPostId(int postId) {
+		return likeDAO.deleteLikeByPost(postId);
+	}
+	
+	
 }

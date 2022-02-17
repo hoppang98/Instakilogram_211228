@@ -44,7 +44,7 @@
 			`id` = #{postId}
 	</delete>
 	
-	<select id="selectPost" resultType="com.instakilogram.project.post.model.Post">
+	<select id="selectPost" parameterType="int" resultType="com.instakilogram.project.post.model.Post">
 		SELECT
 			`id`
 			,`userId`

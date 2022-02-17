@@ -30,12 +30,10 @@
 					<textarea class="form-control" rows="3" id="contentInput"></textarea>
 					<div class="d-flex justify-content-between mt-1">
 						<%-- icon을 클릭했을 때 input 태그를 클릭한 효과와 같은 효과가 나오게 script에서 설정 --%>
-						<span class="img-icon"><i class="bi bi-card-image"
-							id="imgBtn"></i></span>
+						<span class="img-icon"><i class="bi bi-card-image" id="imgBtn"></i></span>
 						<%-- 글씨처럼 span태그에 넣어서 스타일 지정 가능 --%>
 						<input type="file" id="fileInput" class="d-none">
-						<button type="button" class="btn btn-success btn-sm"
-							id="uploadBtn">업로드</button>
+						<button type="button" class="btn btn-success btn-sm" id="uploadBtn">업로드</button>
 					</div>
 				</div>
 
@@ -48,13 +46,15 @@
 								<div>${postDetail.post.userName}</div>
 								<%-- class가 두겹으로 쌓인 경우 이렇게 처리 --%>
 
+
 								<%-- 더보기 버튼(삭제) --%>
 								<div class="more-icon">
-									<a class="text-dark moreBtn" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
+									<a class="text-dark moreBtn" data-post-id="${postDetail.post.id}" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
 										<i class="bi bi-three-dots-vertical"></i>
 									</a>
 								</div>
 							</div>
+
 
 							<img src="${postDetail.post.imagePath}" width="100%">
 
@@ -64,8 +64,8 @@
 								<%-- 좋아요 관리(Like) --%>
 								<div class="ml-3">
 									<%-- data속성 활용해서 a 태그 안에 postId 심어놓는다 --%>
-									<a href="#" class="likeBtn"
-										data-post-id="${postDetail.post.id}"> <c:choose>
+									<a href="#" class="likeBtn" data-post-id="${postDetail.post.id}"> 
+										<c:choose>
 											<c:when test="${postDetail.like}">
 												<%-- getter,setter 잘 확인 / postDeatil.like은 true,false 타입이다. 이 상태는 true --%>
 												<%-- 좋아요 상태에 따라서 a 태그를 구분 --%>
@@ -104,10 +104,8 @@
 								</div>
 
 								<div class="d-flex 100 ml-3 my-2">
-									<input type="text" class="form-control" placeholder="댓글 달기"
-										id="comment${postDetail.post.id}">
-									<button class="btn btn-sm ml-2 mr-3 commentInputBtn"
-										data-post-id="${postDetail.post.id}">게시</button>
+									<input type="text" class="form-control" placeholder="댓글 달기" id="comment${postDetail.post.id}">
+									<button class="btn btn-sm ml-2 mr-3 commentInputBtn" data-post-id="${postDetail.post.id}">게시</button>
 								</div>
 							</div>
 						</c:forEach>
@@ -122,7 +120,9 @@
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
 
-						<div class="modal-body text-center">삭제하기</div>
+						<div class="modal-body text-center">
+							<a href="#" id="deleteBtn"> 삭제하기 </a>
+						</div>
 
 					</div>
 				</div>
@@ -180,34 +180,6 @@
 			
 		});
 		
-
-		// 삭제기능 구현
-		$(".openDeleteModal").on("click", function() {
-			$("#DeleteModal").modal();
-			let postId = $(this).data("post-id");
-			//alert(postId);
-			$("#DeleteModal").data("post-id", postId);
-		});
-		
-		$(".agreeBtn").on("click", function(){
-			var postId = $("#DeleteModal").data("post-id");
-			
-			$.ajax({
-				type:"get"
-				,url:"/post/delete"
-				,data:{"postId":postId}
-				,success:function(data) {
-					if(data.result == "success") {
-						alert("삭제 성공!");
-						location.href="/post/timeline_view";
-					} else {
-						alert("삭제 실패!");
-					}
-				}, error:function(){
-					alert("에러발생");
-				}
-			});
-		});
 		
 		// 댓글 입력 기능
 		$(".commentInputBtn").on("click", function() {
@@ -251,6 +223,39 @@
 			});
 		});
 		
+		
+		// 더보기 버튼(삭제 기능)
+		$(".moreBtn").on("click", function(e){
+			e.preventDefault();
+			
+			let postId = $(this).data("post-id");
+			
+			// postId를 modal의 삭제하기 버튼(deleteBtn)에 값을 부여해서 아래에서 사용
+			$("#deleteBtn").data("post-id", postId); // a태그 안의 deleteBtn에 postId값을 부여
+		});
+		
+		// 더보기 버튼을 누른 후 삭제버튼 클릭
+		$("#deleteBtn").on("click", function(e){
+			e.preventDefault();
+			
+			let postId = $(this).data("post-id");
+			
+			$.ajax({
+				type:"get"
+				,url:"/post/delete"
+				,data:{"postId":postId}
+				,success:function(data) {
+					if(data.result == "success") {
+						location.reload();
+						alert("삭제 성공");
+					} else{
+						alert("삭제 실패");
+					}
+				},error:function(){
+					alert("에러발생");
+				}
+			});
+		});
 		
 		
 		

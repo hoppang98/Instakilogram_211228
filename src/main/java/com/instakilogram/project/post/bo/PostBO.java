@@ -42,7 +42,7 @@ public class PostBO {
 		
 		List<PostDetail> postDetailList = new ArrayList<>(); // - 결과를 저장할 List
 		
-		for(Post post:postList) {
+		for(Post post:postList) { // 향상된 for문
 			// 해당하는 post id로 댓글 가져오기
 			List<Comment> commentList = commentBO.getCommentList(post.getId()); // postId별로 댓글 리스트를 가져온다.
 			//postList와 commentList를 매칭시켜야 한다. - 새로운 형태의 data class를 만든다. /post/model 아래에 PostDetail 생성 --> 하나의 객체로 모든 데이터를 관리 가능
@@ -65,10 +65,18 @@ public class PostBO {
 	}
 	
 	// 삭제
-	public int deletePost(int postId) {
+	public int deletePost(int postId, int userId) { // postId를 통해 댓글과 좋아요까지 같이 삭제 -> commentBO, likeBO에서 작성
+		
 		Post post = postDAO.selectPost(postId);
-		FileManagerService.removeFile(post.getImagePath());
-		return postDAO.deletePost(postId);
+		if(post.getUserId() != userId) { // session에서 불러온 userId와 post에 있는 userId가 다르면 삭제 불가능하게
+			return 0;
+		}
+		FileManagerService.removeFile(post.getImagePath()); //이미지파일 삭제
+		
+		likeBO.deleteLikeByPostId(postId); // 좋아요 삭제
+		commentBO.deleteComment(postId); // 댓글 삭제
+		
+		return postDAO.deletePost(postId); // 포스트 삭제
 	}
 	
 

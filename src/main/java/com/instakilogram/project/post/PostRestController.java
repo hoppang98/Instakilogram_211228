@@ -47,10 +47,14 @@ public class PostRestController {
 	}
 	
 	@GetMapping("/delete")
-	public Map<String, String> postDelete (
-			@RequestParam("postId") int postId
+	public Map<String, String> delete (
+			@RequestParam("postId") int postId,
+			HttpServletRequest request
 			){
-		int count = postBO.deletePost(postId);
+		HttpSession session = request.getSession();
+		int userId = (Integer)session.getAttribute("userId"); // session을 통해 본인인 경우에만 삭제가 가능하도록 해야한다.
+		
+		int count = postBO.deletePost(postId, userId);
 		
 		Map<String, String> result = new HashMap<>();
 		

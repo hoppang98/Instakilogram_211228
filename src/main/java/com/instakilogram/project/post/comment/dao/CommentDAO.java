@@ -23,4 +23,7 @@ public interface CommentDAO {
 	
 	//postId로 댓글 리스트 가져오기(postId에 맞는 댓글 리스트를 가져온다) - postBO에서 활용
 	public List<Comment> selectCommentList(@Param("postId") int postId);
+	
+	// 포스트 삭제시 댓글까지 삭제
+	public int deleteComment(@Param("postId") int postId);
 }
