@@ -46,7 +46,6 @@
 								<div>${postDetail.post.userName}</div>
 								<%-- class가 두겹으로 쌓인 경우 이렇게 처리 --%>
 
-
 								<%-- 더보기 버튼(삭제) --%>
 								<div class="more-icon">
 									<a class="text-dark moreBtn" data-post-id="${postDetail.post.id}" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
@@ -55,12 +54,9 @@
 								</div>
 							</div>
 
-
 							<img src="${postDetail.post.imagePath}" width="100%">
 
-
 							<div class="border">
-
 								<%-- 좋아요 관리(Like) --%>
 								<div class="ml-3">
 									<%-- data속성 활용해서 a 태그 안에 postId 심어놓는다 --%>

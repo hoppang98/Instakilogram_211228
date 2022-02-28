@@ -24,7 +24,7 @@ public class UserRestController {
 	private UserBO userBO;
 	
 	@PostMapping("/sign_up")
-	public Map<String, String> singUp(		
+	public Map<String, String> signUp(		
 			@RequestParam("loginId") String loginId,
 			@RequestParam("password") String password,
 			@RequestParam("name") String name,
